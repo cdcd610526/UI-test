@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMT 任务</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .left-panel, .right-panel {
+            width: 48%;
+        }
+
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-box {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .image-box img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 80vh;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .task-description {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .table-description {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .image-box img {
+            max-width: 90%; /* 控制图像宽度 */
+        }
+
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .start-btn, .end-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .start-btn:hover, .end-btn:hover {
+            background-color: #45a049;
+        }
+
+        .start-btn {
+            display: inline-block;
+        }
+
+        .end-btn {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 左侧面板，显示任务说明 -->
+    <div class="left-panel">
+        <div class="task-description">
+            <h2>任务说明</h2>
+            <p>在此任务中，您将执行一些触摸屏操作，我们会记录您的鼠标操作以模拟这些操作。您的任务包括：</p>
+            <ul>
+                <li>点击某个按钮。</li>
+                <li>长按某个区域。</li>
+                <li>滑动以查看不同内容。</li>
+                <li>使用键盘快捷键进行交互。</li>
+            </ul>
+            <p>请根据屏幕上的提示操作，并按 "Start" 按钮开始记录您的行为。</p>
+        </div>
+
+        <!-- 按钮区域 -->
+        <div class="button-container">
+            <button class="start-btn" onclick="startTracking()">Start</button>
+            <button class="end-btn" onclick="endTracking()">End</button>
+        </div>
+    </div>
+
+    <!-- 右侧面板，显示表格截图和说明文字 -->
+    <div class="right-panel">
+        <div class="table-description">
+            <h3>触摸屏操作与鼠标模拟对比</h3>
+            <p>下方表格展示了触摸屏操作与如何用鼠标模拟这些操作的对比。</p>
+        </div>
+
+        <div class="image-box">
+            <img id="taskImage" src="file:///C:/Users/cyd/Desktop/说明.png" alt="Table Screenshot">
+        </div>
+    </div>
+</div>
+
+<!-- 中间展示任务图像 -->
+<div class="image-box">
+    <img id="taskImage" src="D:/UI数据集收集/自己收集/来自MobileViews/注册或登录/89974.jpg" alt="Task Image">
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let trackingStarted = false;
+        let startTime = 0;
+        let endTime = 0;
+        let startCoords = { x: 0, y: 0 };
+        let endCoords = { x: 0, y: 0 };
+        let keyPressed = false;
+        let keyDown = null; // 用来保存按下的键值（例如 "D", "I", "O", "T"）
+
+        // 启动数据收集
+        window.startTracking = function() {
+            trackingStarted = true;
+            document.querySelector('.start-btn').style.display = 'none';
+            document.querySelector('.end-btn').style.display = 'inline-block';
+            
+            // 记录开始时间
+            startTime = new Date().getTime();
+            document.getElementById('taskImage').addEventListener('mousedown', handleMouseDown);
+            document.getElementById('taskImage').addEventListener('mouseup', handleMouseUp);
+            document.getElementById('taskImage').addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('keyup', handleKeyUp);
+        };
+
+        // 结束数据收集
+        window.endTracking = function() {
+            trackingStarted = false;
+            document.querySelector('.start-btn').style.display = 'inline-block';
+            document.querySelector('.end-btn').style.display = 'none';
+            
+            // 移除鼠标事件监听器
+            document.getElementById('taskImage').removeEventListener('mousedown', handleMouseDown);
+            document.getElementById('taskImage').removeEventListener('mouseup', handleMouseUp);
+            document.getElementById('taskImage').removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);
+        };
+
+        // 处理键盘按下事件
+        function handleKeyDown(event) {
+            keyDown = event.key; // 保存按下的键
+            if (keyDown === "D" || keyDown === "I" || keyDown === "O" || keyDown === "T") {
+                keyPressed = true;
+            }
+        }
+
+        // 处理键盘抬起事件
+        function handleKeyUp(event) {
+            keyPressed = false;
+            keyDown = null; // 释放按键，避免后续误记录
+        }
+
+        // 处理鼠标按下事件
+        function handleMouseDown(event) {
+            if (trackingStarted) {
+                startCoords = { x: event.offsetX, y: event.offsetY };
+                startTime = new Date().getTime(); // 记录开始时间
+                console.log(`鼠标点击开始 - 时间: ${startTime}, 坐标: (${startCoords.x}, ${startCoords.y})`);
+                event.preventDefault(); // 禁止图片拖动
+            }
+        }
+
+        // 处理鼠标抬起事件
+        function handleMouseUp(event) {
+            if (trackingStarted) {
+                endCoords = { x: event.offsetX, y: event.offsetY };
+                endTime = new Date().getTime(); // 记录结束时间
+                const duration = endTime - startTime; // 计算持续时间
+                const distance = Math.sqrt(Math.pow(endCoords.x - startCoords.x, 2) + Math.pow(endCoords.y - startCoords.y, 2)); // 计算位移
+
+                // 根据操作类型输出标签
+                if (duration < 500 && distance < 30) {
+                    console.log("标签: 点击操作");
+                } else if (duration >= 500 && distance < 30) {
+                    console.log("标签: 长按操作");
+                } else if (distance > 30) {
+                    console.log("标签: 滑动操作");
+                    if (keyDown === "D") {
+                        console.log("标签: 拖动操作");
+                    }
+                }
+
+                // 判断是否为缩放操作
+                if (keyDown === "I") {
+                    console.log("标签: 缩放 - 放大操作");
+                } else if (keyDown === "O") {
+                    console.log("标签: 缩放 - 缩小操作");
+                }
+
+                // 判断是否按下了回车键
+                if (event.key === "Enter") {
+                    console.log("标签: 按下了回车键");
+                }
+
+                // 判断是否为文本输入操作
+                if (keyDown === "T") {
+                    console.log("标签: 文本输入操作");
+                }
+
+                console.log(`鼠标点击结束 - 时间: ${endTime}, 持续时间: ${duration} 毫秒, 位移: ${distance}px, 坐标: (${endCoords.x}, ${endCoords.y})`);

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMT 任务</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .image-box {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .image-box img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 80vh;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .button-container {
+            margin-top: 20px;
+        }
+        
+        .start-btn, .end-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .start-btn:hover, .end-btn:hover {
+            background-color: #45a049;
+        }
+
+        .start-btn {
+            display: inline-block;
+        }
+
+        .end-btn {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="image-box">
+        <img id="taskImage" src="D:/UI数据集收集/自己收集/来自MobileViews/注册或登录/89974.jpg" alt="Task Image">
+    </div>
+
+    <div class="button-container">
+        <button class="start-btn" onclick="startTracking()">开始</button>
+        <button class="end-btn" onclick="endTracking()">结束</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let trackingStarted = false;
+        let startTime = 0;
+        let endTime = 0;
+        let startCoords = { x: 0, y: 0 };
+        let endCoords = { x: 0, y: 0 };
+
+        // 启动数据收集
+        window.startTracking = function() {
+            trackingStarted = true;
+            document.querySelector('.start-btn').style.display = 'none';
+            document.querySelector('.end-btn').style.display = 'inline-block';
+            
+            // 记录开始时间
+            startTime = new Date().getTime();
+            document.getElementById('taskImage').addEventListener('mousedown', handleMouseDown);
+            document.getElementById('taskImage').addEventListener('mouseup', handleMouseUp);
+            document.getElementById('taskImage').addEventListener('mousemove', handleMouseMove);
+        };
+
+        // 结束数据收集
+        window.endTracking = function() {
+            trackingStarted = false;
+            document.querySelector('.start-btn').style.display = 'inline-block';
+            document.querySelector('.end-btn').style.display = 'none';
+            
+            // 移除鼠标事件监听器
+            document.getElementById('taskImage').removeEventListener('mousedown', handleMouseDown);
+            document.getElementById('taskImage').removeEventListener('mouseup', handleMouseUp);
+            document.getElementById('taskImage').removeEventListener('mousemove', handleMouseMove);
+        };
+
+        // 处理鼠标按下事件
+        function handleMouseDown(event) {
+            if (trackingStarted) {
+                startCoords = { x: event.offsetX, y: event.offsetY };
+                startTime = new Date().getTime(); // 记录开始时间
+                console.log(`鼠标点击开始 - 时间: ${startTime}, 坐标: (${startCoords.x}, ${startCoords.y})`);
+                event.preventDefault(); // 禁止图片拖动
+            }
+        }
+
+        // 处理鼠标抬起事件
+        function handleMouseUp(event) {
+            if (trackingStarted) {
+                endCoords = { x: event.offsetX, y: event.offsetY };
+                endTime = new Date().getTime(); // 记录结束时间
+                const duration = endTime - startTime; // 计算持续时间
+                console.log(`鼠标点击结束 - 时间: ${endTime}, 持续时间: ${duration} 毫秒, 坐标: (${endCoords.x}, ${endCoords.y})`);
+                event.preventDefault(); // 禁止图片拖动
+            }
+        }
+
+        // 处理鼠标移动事件（滑动操作）
+        function handleMouseMove(event) {
+            if (trackingStarted && event.buttons === 1) { // 判断是否按下鼠标左键（滑动）
+                endCoords = { x: event.offsetX, y: event.offsetY }; // 实时更新结束坐标
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMT 任务</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            flex-direction: column;
+        }
+
+        .progress-bar-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .progress-step {
+            position: relative;
+            width: 20%;
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+
+        .progress-step.active {
+            background-color: #4CAF50;
+        }
+
+        .progress-step.completed {
+            background-color: #4CAF50;
+        }
+
+        .progress-step .step-number {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .question-info {
+            margin-top: 10px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .content-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .explanation-box {
+            flex: 1;
+            padding: 20px;
+            max-width: 200px;
+        }
+        .explanation-box img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .image-box {
+            flex: 2;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .image-box img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 80vh;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .question-box {
+            flex: 1;
+            padding: 20px;
+            border-left: 2px solid #ccc;
+        }
+        .question-box h2 {
+            margin-top: 0;
+        }
+        .question-box textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .submit-btn, .next-btn, .previous-btn, .start-btn, .end-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover, .next-btn:hover, .previous-btn:hover, .start-btn:hover, .end-btn:hover {
+            background-color: #45a049;
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .start-btn {
+            background-color: #2196F3;
+        }
+
+        .end-btn {
+            background-color: #F44336;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 美化的进度条容器 -->
+<div class="progress-bar-container">
+    <div class="progress-step active">
+        <div class="step-number">1</div>
+    </div>
+    <div class="progress-step">
+        <div class="step-number">2</div>
+    </div>
+    <div class="progress-step">
+        <div class="step-number">3</div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="content-container">
+        <div class="explanation-box">
+            <h3>补充说明</h3>
+            <p>这里可以放一些说明文字，解释图片的内容或者提供额外的信息。</p>
+            <img src="path_to_explanation_image.jpg" alt="Explanation Image">
+        </div>
+
+        <div class="image-box">
+            <img id="taskImage" src="D:/UI数据集收集/自己收集/来自MobileViews/注册或登录/89974.jpg" alt="Task Image">
+        </div>
+
+        <div class="question-box">
+            <div class="question-container active" id="question1">
+                <h2>问题 1: 请描述图片中的主要内容。</h2>
+                <textarea id="answer1" placeholder="请输入您的回答..."></textarea>
+                <button class="previous-btn" onclick="previousQuestion('question1', 'question3')" style="display:none;">Previous</button>
+                <button class="next-btn" onclick="nextQuestion('question1', 'question2')">Next</button>
+                <div class="question-info">问题 1 / 3</div>
+            </div>
+
+            <div class="question-container" id="question2">
+                <h2>问题 2: 您认为图片中的颜色搭配如何？</h2>
+                <textarea id="answer2" placeholder="请输入您的回答..."></textarea>
+                <button class="previous-btn" onclick="previousQuestion('question2', 'question1')">Previous</button>
+                <button class="next-btn" onclick="nextQuestion('question2', 'question3')">Next</button>
+                <div class="question-info">问题 2 / 3</div>
+            </div>
+
+            <div class="question-container" id="question3">
+                <h2>问题 3: 其他意见或反馈。</h2>
+                <textarea id="answer3" placeholder="请输入您的回答..."></textarea>
+                <button class="previous-btn" onclick="previousQuestion('question3', 'question2')">Previous</button>
+                <button class="next-btn" onclick="nextQuestion('question3', 'submit')">Next</button>
+                <div class="question-info">问题 3 / 3</div>
+            </div>
+
+            <div class="question-container" id="submit">
+                <button class="submit-btn" onclick="submitResponse()">提交回答</button>
+            </div>
+
+            <!-- 开始和结束按钮 -->
+            <div>
+                <button class="start-btn" onclick="startTracking()">开始</button>
+                <button class="end-btn" onclick="endTracking()" style="display:none;">结束</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let trackingStarted = false;
+    let startTime = 0;
+    let endTime = 0;
+    let startCoords = { x: 0, y: 0 };
+    let endCoords = { x: 0, y: 0 };
+
+    // 启动数据收集
+    function startTracking() {
+        trackingStarted = true;
+        document.querySelector('.start-btn').style.display = 'none';
+        document.querySelector('.end-btn').style.display = 'inline-block';
+        
+        // 开始时记录点击时间
+        startTime = new Date().getTime();
+        document.getElementById('taskImage').addEventListener('mousedown', handleMouseDown);
+        document.getElementById('taskImage').addEventListener('mouseup', handleMouseUp);
+    }
+
+    // 结束数据收集
+    function endTracking() {
+        trackingStarted = false;
+        document.querySelector('.start-btn').style.display = 'inline-block';
+        document.querySelector('.end-btn').style.display = 'none';
+        
+        // 移除鼠标事件监听器
+        document.getElementById('taskImage').removeEventListener('mousedown', handleMouseDown);
+        document.getElementById('taskImage').removeEventListener('mouseup', handleMouseUp);
+    }
+
+    // 处理鼠标按下事件
+    function handleMouseDown(event) {
+        if (trackingStarted) {
+            startCoords = { x: event.offsetX, y: event.offsetY };
+            console.log(`鼠标点击开始 - 时间: ${startTime}, 坐标: (${startCoords.x}, ${startCoords.y})`);
+        }
+    }
+
+    // 处理鼠标松开事件
+    function handleMouseUp(event) {
+        if (trackingStarted) {
+            endTime = new Date().getTime();
+            endCoords = { x: event.offsetX, y: event.offsetY };
+           
