@@ -313,6 +313,10 @@
         if (taskImage.complete) {
             taskImage.onload();
         }
+        // 禁止整个页面的拖动行为
+        document.addEventListener('dragstart', function(event) {
+            event.preventDefault(); // 禁止拖动事件
+        });
 
         // 撤销操作
         window.undoAction = function() {
@@ -338,10 +342,6 @@
             document.addEventListener('keyup', handleKeyUp);
             // 记录开始时间
             startTime = new Date().getTime();
-            // 禁止整个页面的拖动行为
-            document.addEventListener('dragstart', function(event) {
-                event.preventDefault(); // 禁止拖动事件
-            });
         };
 
         // 结束数据收集
