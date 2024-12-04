@@ -149,7 +149,46 @@
             margin-top: -20px;
             text-align: center;
         }
+        /* 弹出视频容器样式 */
+        .video-popup {
+            display: none;  /* 初始隐藏视频弹窗 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);  /* 使弹窗居中 */
+            background-color: rgba(0, 0, 0, 0.8); /* 背景色 */
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 9999;
+            width: 70vw;  /* 宽度限制为屏幕宽度的 70% */
+            max-height: 80vh;  /* 最大高度为屏幕高度的 80% */
+            overflow: hidden;  /* 防止视频过大 */
+        }
 
+        /* 视频样式 */
+        .video-popup video {
+            width: 100%;  /* 视频宽度自适应容器 */
+            height: auto; /* 高度自动调整，保持比例 */
+            border-radius: 10px;
+        }
+
+        /* 关闭按钮样式 */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
     </style>
 </head>
 <body>
@@ -201,7 +240,17 @@
         <p class="important-text">Please use the mouse and keyboard to simulate various touchscreen operations on the screenshot in the center to complete the login task</p>
         <p class="important-text">Click the 'End' button to finish data collection after completing the task.</p>
         <button class="end-btn" onclick="endTracking()">End</button>
+        <button class="end-btn" onclick="showVideo()">Tutorial</button>
     </div>
+</div>
+</div>
+<!-- 弹出视频的容器 -->
+<div id="videoPopup" class="video-popup">
+    <button class="close-btn" onclick="closeVideo()">X</button>
+    <video controls>
+        <source src="https://cdcd610526.github.io/UI-test/video/%E8%AF%B4%E6%98%8E%E8%A7%86%E9%A2%91.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
 </div>
 
 <!-- 星星拖尾效果 -->
@@ -210,6 +259,21 @@
 <script src="点击烟花.js"></script>
 
 <!-- JavaScript 部分 -->
+<script>
+    // 显示视频弹窗
+    function showVideo() {
+        document.getElementById('videoPopup').style.display = 'block';  // 显示弹窗
+    }
+
+    // 关闭视频弹窗
+    function closeVideo() {
+        document.getElementById('videoPopup').style.display = 'none';  // 隐藏弹窗
+    }
+
+    function undoAction() {
+        alert("Undo operation!");
+    }
+</script>
 <script>
     let collectedData = [];  // 用于收集数据
     let taskStartData = [];  // 用于收集任务开始信息（开始时间、显示尺寸、原始尺寸）
