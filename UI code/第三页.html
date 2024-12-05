@@ -322,6 +322,7 @@
         window.undoAction = function() {
             updateTextBox("Undo");  // 更新文本框为“撤销上一步操作”
             console.log("标签: 撤销上一步操作");
+            recordData("Undo", startTime, endTime, { x: 0, y: 0 }, { x: 0, y: 0 });
         }
 
         let trackingStarted = true;
