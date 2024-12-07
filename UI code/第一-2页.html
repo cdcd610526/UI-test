@@ -276,14 +276,17 @@
         let displayedWidth = 0;
         let displayedHeight = 0;
         let thresholdCalculated = false;  // 新增标志变量
+        let textInputOccurred = false;
+        let clickOccurred = false
+
 
         // 确保图片加载完毕后获取尺寸
         taskImage.onload = function() {
             // 获取当前时间戳（图片加载完成后的时间）
             let imageLoadTimestamp = new Date().getTime();
             console.log('taskImage加载完成的时间戳:', imageLoadTimestamp);
-            displayedWidth = taskImage.clientWidth;  // 图片在页面上显示的宽度
-            displayedHeight = taskImage.clientHeight; // 图片在页面上显示的高度
+            displayedWidth = taskImage.clientWidth;  
+            displayedHeight = taskImage.clientHeight; 
             console.log('图片的显示尺寸:', displayedWidth, displayedHeight);
             // 计算滑动阈值，并设置标志
             const slideThreshold = Math.min(displayedWidth * 0.04, displayedHeight * 0.04);
@@ -334,8 +337,13 @@
             document.getElementById('taskImage').removeEventListener('mouseup', handleMouseUp);
             document.getElementById('taskImage').removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('keydown', handleKeyDown);
-            document.removeEventListener('keyup', handleKeyUp);   
-            window.location.href = "第一-3页.html";      
+            document.removeEventListener('keyup', handleKeyUp);      
+            if (textInputOccurred && clickOccurred) {
+                window.location.href = "第一-3页.html";
+            } else {
+                alert("The test failed. Please try again");
+                location.reload();  
+            }
         };
         // 处理键盘按下事件
         function handleKeyDown(event) {
@@ -376,6 +384,7 @@
 
                     // 根据操作类型输出标签，并更新文本框内容
                     if (duration < 500 && distance < slideThreshold) {
+                        clickOccurred = true;
                         updateTextBox("Click");
                         console.log("标签: 点击操作");
                     } else if (distance > slideThreshold) {
@@ -389,6 +398,7 @@
                 }
                 // 判断是否为文本输入操作
                 if (keyDown === "T") {
+                    textInputOccurred = true;
                     updateTextBox("Text Input");
                     console.log("标签: 文本输入操作");
                 }
