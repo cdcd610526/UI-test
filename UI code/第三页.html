@@ -159,8 +159,8 @@
         <h3>Description</h3>
         <table>
             <tr>
-                <th>0peration Type</th>
-                <th>Simulation 0peration</th>
+                <th>Operation Type</th>
+                <th>Simulation Operation</th>
             </tr>
             <tr>
                 <td>Click</td>
@@ -190,7 +190,9 @@
 
     <div class="right">
         <h3>Task Description</h3>
-        <p class="important-text">Please use the mouse and keyboard to simulate various touchscreen operations on the screenshot in the center to complete the three tasks: registration/login, information retrieval, and setting attributes.</p>
+        <p class="important-text" id="taskDescription">1、首先是17个注册/登录任务：若是您想要在这个APP上注册或者登录账号，那么您在看到这个界面会进行什么样的操作？</p>
+        <p class="important-text" id="taskDescription">2、接下来是17个信息检索任务：若是您想要寻找一些您需要或者感兴趣的内容，那么您在看到这个界面会进行什么样的操作？</p>
+        <p class="important-text" id="taskDescription">3、最后是17个属性设置任务：若是您想要设置一些参数/条件，那么您在看到这个界面后会进行什么样的操作？（按照您自己的习惯和喜好设置即可）"</p>
         <p class="important-text">Click the 'End' button to finish data collection after completing the task.</p>
         <button class="end-btn" onclick="endTracking()">End</button>
     </div>
@@ -210,6 +212,27 @@
         .then(response => response.json())  
         .then(data => {
             imageUrls = data.imageURLs; 
+
+            // 分成3个组：前17张、第二组17张、第三组17张
+            const group1 = imageUrls.slice(0, 17);  // 第一组
+            const group2 = imageUrls.slice(17, 34); // 第二组
+            const group3 = imageUrls.slice(34, 51); // 第三组
+            // 打乱每个组内的顺序
+            shuffleArray(group1);
+            shuffleArray(group2);
+            shuffleArray(group3);
+            // 重新合并成一个打乱后的数组，组内顺序打乱但组的顺序不变
+            imageUrls = group1.concat(group2, group3);
+            // 加载第一组图片并突出显示描述文字
+            loadGroupImages(1); // 载入第一组图片
+
+            // Fisher-Yates 打乱算法
+            function shuffleArray(arr) {
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));  // 随机选取一个索引
+                    [arr[i], arr[j]] = [arr[j], arr[i]];  // 交换元素
+                }
+            }  
             if (imageUrls && imageUrls.length > 0) {
                 loadImage(currentImageIndex); 
             } else {
@@ -219,6 +242,20 @@
         .catch(error => {
             console.error("加载图片链接失败:", error);
         });
+
+    // 加载当前组的图片
+    function loadGroupImages(groupNumber) {
+        let currentGroup;
+        // 根据组别选择对应的图片组
+        if (groupNumber === 1) {
+            currentGroup = imageUrls.slice(0, 17);
+        } else if (groupNumber === 2) {
+            currentGroup = imageUrls.slice(17, 34);
+        } else {
+            currentGroup = imageUrls.slice(34, 51);
+        }
+    }
+
     // 加载图片的函数
     function loadImage(index) {
         if (index >= 0 && index < imageUrls.length) {
@@ -442,5 +479,7 @@
         }
     });
 </script>
+</body>
+</html>
 </body>
 </html>
