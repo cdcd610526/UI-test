@@ -7,7 +7,6 @@
     <title>AMT 任务</title>
     <!-- CSS 部分 -->
     <style>
-        /* 页面整体布局 */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -19,8 +18,6 @@
             background-color: #f4f4f4;
             flex-direction: column;
         }
-
-        /* 容器的基本样式 */
         .container {
             width: 80%;
             height: 80vh;
@@ -125,7 +122,7 @@
             margin-bottom: 20px;
             font-size: 24px;
             color: #333;
-            padding-top: 40px;  
+            padding-top: 0px;  
         }
 
         .right p {
@@ -137,24 +134,23 @@
             font-size: 18px;         
             font-weight: bold;        
             color: #333;        
-            margin: 20px 0;       
+            margin: 10px 0;       
         }
 
         h1 {
             font-size: 40px;
             color: #333;
-            margin-top: -20px;
+            margin-top: 0px;
             text-align: center;
         }
 
     </style>
 </head>
 <body>
-
 <!-- 主体容器 -->
 <div class="container">
     <div class="left">
-        <input class="text-box" type="text" value="Operation Type" readonly>
+        <input id="operationType" class="text-box" type="text" value="Operation Type" readonly>
         <button class="undo-btn" onclick="undoAction()">Undo</button> 
         <h3>Description</h3>
         <table>
@@ -190,9 +186,10 @@
 
     <div class="right">
         <h3>Task Description</h3>
-        <p class="important-text" id="taskDescription">1、首先是17个注册/登录任务：若是您想要在这个APP上注册或者登录账号，那么您在看到这个界面会进行什么样的操作？</p>
-        <p class="important-text" id="taskDescription">2、接下来是17个信息检索任务：若是您想要寻找一些您需要或者感兴趣的内容，那么您在看到这个界面会进行什么样的操作？</p>
-        <p class="important-text" id="taskDescription">3、最后是17个属性设置任务：若是您想要设置一些参数/条件，那么您在看到这个界面后会进行什么样的操作？（按照您自己的习惯和喜好设置即可）"</p>
+        <p class="important-text" id="taskDescription">There are 51 images, divided into three types of tasks:</p>
+        <p class="important-text" id="taskDescription">1. Registration/Login Tasks (Images 1-17) : If you want to register or log in to the app, please think about what actions you would take when you see these screens.</p>
+        <p class="important-text" id="taskDescription">2. Information Retrieval Tasks (Images 18-34) : If you want to search for something that interests you, what actions would you take when you see these screens?</p>
+        <p class="important-text" id="taskDescription">3. Settings Tasks (Images 35-51) : If you want to adjust some settings or preferences, what actions would you take when you see these screens, based on your own habits and preferences?</p>
         <p class="important-text">Click the 'End' button to finish data collection after completing the task.</p>
         <button class="end-btn" onclick="endTracking()">End</button>
     </div>
@@ -207,13 +204,15 @@
     let taskStartData = [];  
     let currentImageIndex = 0; 
     let imageUrls = []; 
+    function updateTextBox(text) {
+        document.querySelector('.text-box').value = text;  
+    }
+
     // Fetch the JSON file containing the image URLs
     fetch('https://cdcd610526.github.io/UI-test/imageURL/1/merged_image_urls.json')
         .then(response => response.json())  
         .then(data => {
             imageUrls = data.imageURLs; 
-
-            // 分成3个组：前17张、第二组17张、第三组17张
             const group1 = imageUrls.slice(0, 17);  // 第一组
             const group2 = imageUrls.slice(17, 34); // 第二组
             const group3 = imageUrls.slice(34, 51); // 第三组
@@ -223,7 +222,6 @@
             shuffleArray(group3);
             // 重新合并成一个打乱后的数组，组内顺序打乱但组的顺序不变
             imageUrls = group1.concat(group2, group3);
-            // 加载第一组图片并突出显示描述文字
             loadGroupImages(1); // 载入第一组图片
 
             // Fisher-Yates 打乱算法
@@ -246,7 +244,6 @@
     // 加载当前组的图片
     function loadGroupImages(groupNumber) {
         let currentGroup;
-        // 根据组别选择对应的图片组
         if (groupNumber === 1) {
             currentGroup = imageUrls.slice(0, 17);
         } else if (groupNumber === 2) {
@@ -261,6 +258,7 @@
         if (index >= 0 && index < imageUrls.length) {
             console.log("加载图片索引: " + index);  
             document.getElementById('taskImage').src = imageUrls[index];  
+            updateTextBox((index + 1) + "/51"); 
         } else {
             console.error("图片索引超出范围" + index);
         }
@@ -419,10 +417,6 @@
                 .buttons === 1) { // 判断是否按下鼠标左键（滑动）
                 endCoords = { x: event.offsetX, y: event.offsetY }; // 实时更新结束坐标
             }
-        }
-
-        function updateTextBox(text) {
-            document.querySelector('.text-box').value = text;  
         }
 
         function recordData(actionType, startTime, endTime, startCoords, endCoords) {
