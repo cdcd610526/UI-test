@@ -30,6 +30,16 @@
             color: #333;
             margin-bottom: 20px;
         }
+
+        /* 按钮容器样式 */
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 每行 4 个按钮 */
+            gap: 10px; /* 按钮之间的间距 */
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
         /* 按钮样式 */
         .start-btn {
             padding: 15px 30px;
@@ -59,14 +69,37 @@
     <!-- 引入外部JavaScript文件 -->
     <script src="星星拖尾.js"></script>
 
-    <div class="loading">请点击“开始”按钮进入正式的测试页面</div>
+    <div class="loading">请任选一个“Start”按钮进入正式的测试页面(不同按钮的区别是对应不同批的图像)</div>
     
-    <!-- Start 按钮 -->
-    <button class="start-btn" onclick="startTask()">开始</button>
+    <!-- 按钮容器 -->
+    <div class="button-container" id="button-container">
+        <!-- 按钮将通过 JavaScript 动态生成 -->
+    </div>
 
     <script>
-        function startTask() {
-            window.location.href = "9.html";  // 替换成实际页面的 URL
+        // 定义 20 个图像链接的批次
+        const imageBatches = [
+            "https://cdcd610526.github.io/UI-test/imageURL/1/merged_image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/2/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/3/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/4/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/5/image_urls.json",
+            "https://cdcd610526.github.io/UI-test/imageURL/6/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/7/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/8/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/9/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/10/image_urls.json",
+            "https://cdcd610526.github.io/UI-test/imageURL/11/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/12/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/13/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/14/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/15/image_urls.json",
+            "https://cdcd610526.github.io/UI-test/imageURL/16/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/17/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/18/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/19/image_urls.json", "https://cdcd610526.github.io/UI-test/imageURL/20/image_urls.json"
+        ];
+
+        // 获取按钮容器
+        const buttonContainer = document.getElementById('button-container');
+
+        // 动态生成 20 个按钮
+        imageBatches.forEach((batch, index) => {
+            const button = document.createElement('button');
+            button.className = 'start-btn';
+            button.textContent = `Start ${index + 1}`; // 按钮文字为 Start 1, Start 2, ..., Start 20
+            button.onclick = () => startTask(batch); // 点击按钮时传递对应的批次
+            buttonContainer.appendChild(button);
+        });
+
+        // 跳转到 9.html 并传递批次参数
+        function startTask(batch) {
+            window.location.href = `9.html?imageSet=${batch}`; // 将批次参数传递给 9.html
         }
     </script>
 </body>
