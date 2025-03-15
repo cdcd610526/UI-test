@@ -1,0 +1,351 @@
+<!-- HTML 部分 -->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务页面</title>
+    <!-- CSS 部分 -->
+    <style>
+        /* 页面整体布局 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            flex-direction: column;
+        }
+
+        /* 上方文本样式 */
+        .progress-text {
+            font-size: 30px;
+            font-weight: bold;
+            color: #f01111;
+            margin-top: 20px;
+        }
+
+        /* 容器的基本样式 */
+        .container {
+            width: 80%;
+            height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            text-align: center;
+            margin-left: 20px;  /* 左侧的间距 */
+            margin-right: 20px; /* 右侧的间距 */
+        }
+        .left, .right {
+            width: 20%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            text-align: left;
+            height: 100%;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        .right {
+            position: relative; 
+        }
+        .text-box {
+            box-sizing: border-box;  /* 包括边框和内边距 */
+            width: 50%;
+            margin-left: auto;
+            margin-right: 0;
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .text-box {
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            color: #333;
+            font-weight: bold;
+        }
+        .left table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .left table, .left th, .left td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .left th {
+            background-color: #f1f1f1;
+        }
+
+        .middle {
+            width: 35%;
+            text-align: center;           
+        }
+
+        .image-container {
+            border: 2px solid #ddd;
+            padding: 10px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .middle img {
+            width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+
+        .end-btn {
+            margin-left: 0px;
+            margin-right: auto;        
+            margin-top: 20px;
+            padding: 20px 40px; /* 使左右内边距与左右外边距一致 */
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .end-btn:hover {
+            background-color: #45a049;
+        }
+        
+        .right h3 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+            padding-top: 40px;  /* 给右侧标题增加上边距，确保与左侧对齐 */
+        }
+
+        .right p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        /* 强调文本的样式 */
+        .important-text {
+            font-size: 18px;          /* 增大字体 */
+            font-weight: bold;        /* 加粗 */
+            color: #333;              /* 颜色更深，更显眼 */
+            margin: 20px 0;           /* 添加上下间距 */
+        }
+        .important-text-red {
+            font-size: 18px;         
+            font-weight: bold;        
+            color: red  !important; 
+            margin: 10px 0;       
+        }
+    </style>
+</head>
+<body>
+
+<!-- 主体容器 -->
+<div class="container">
+    <!-- 左侧任务说明部分-->
+    <div class="left">
+        <!-- 添加文本框 -->
+        <input class="text-box" type="text" value="交互类型" readonly>
+        <h3>交互类型说明</h3>
+        <table>
+            <tr>
+                <th>交互类型</th>
+                <th>模拟方式</th>
+            </tr>
+            <tr>
+                <td>点击</td>
+                <td>在目标区域按一下鼠标左键</td>
+            </tr>
+            <tr>
+                <td>滑动</td>
+                <td>鼠标左键保持按住状态并拖动</td>
+            </tr>
+            <tr>
+                <td>拖动</td>
+                <td>同时按下鼠标左键和键盘中的大写“D”，移动鼠标到目标位置后释放鼠标和键盘</td>
+            </tr>
+            <tr>
+                <td>文本输入</td>
+                <td>同时按下鼠标左键和键盘中的大写“T”，将鼠标从文本框最左端移动到最右端后释放鼠标和键盘</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 中间部分：显示图片和按钮 -->
+    <div class="middle">
+        <p class="progress-text">练习3/3</p>
+        <div class="image-container">
+            <img id="taskImage" src="https://s2.loli.net/2024/12/04/ePqx2yYDdHUZChG.jpg" alt="Task Image">
+        </div>       
+    </div>
+    <!-- 右侧说明部分-->
+    <div class="right">
+        <h3>任务说明</h3>
+        <p class="important-text">在中间的UI截图中进行“滑动”交互</p>
+        <p class="important-text-red">请核对左上角文本框中系统记录的操作是否为您实际想要进行的操作。若不一致，可能原因如下：</p>
+        <p class="important-text-red">1、“D”和“T”必须是大写</p>
+        <p class="important-text-red">2、需键盘输入时键盘和鼠标必须同时按下同时释放</p>
+        <button class="end-btn" onclick="endTracking()">End</button>
+    </div>
+</div>
+<!-- 星星拖尾效果 -->
+<span class="js-cursor-container"></span>
+<script src="星星拖尾.js"></script>
+<script src="点击烟花.js"></script>
+<!-- JavaScript 部分 -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let taskImage = document.getElementById('taskImage');
+        // 定义全局变量，存储图片的显示尺寸
+        let displayedWidth = 0;
+        let displayedHeight = 0;
+        let thresholdCalculated = false;  // 新增标志变量
+
+        // 确保图片加载完毕后获取尺寸
+        taskImage.onload = function() {
+            // 获取当前时间戳（图片加载完成后的时间）
+            let imageLoadTimestamp = new Date().getTime();
+            console.log('taskImage加载完成的时间戳:', imageLoadTimestamp);
+            displayedWidth = taskImage.clientWidth;  // 图片在页面上显示的宽度
+            displayedHeight = taskImage.clientHeight; // 图片在页面上显示的高度
+            console.log('图片的显示尺寸:', displayedWidth, displayedHeight);
+            // 计算滑动阈值，并设置标志
+            const slideThreshold = Math.min(displayedWidth * 0.04, displayedHeight * 0.04);
+            console.log('计算的滑动阈值:', slideThreshold);
+            thresholdCalculated = true;  // 设为已计算
+        }
+
+        // 如果图片已经加载，直接获取尺寸
+        if (taskImage.complete) {
+            taskImage.onload();
+        }
+
+        let trackingStarted = true;
+        let startTime = 0;
+        let endTime = 0;
+        let startCoords = { x: 0, y: 0 };
+        let endCoords = { x: 0, y: 0 };
+        let keyPressed = false;
+        let keyDown = null; // 用来保存按下的键值（例如 "D", "I", "O", "T"）
+
+        // 启动数据收集
+        window.onload = function() {    
+            let trackingStarted = true;    
+            taskImage.addEventListener('mousedown', handleMouseDown);
+            taskImage.addEventListener('mouseup', handleMouseUp);
+            taskImage.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('keyup', handleKeyUp);
+            // 记录开始时间
+            startTime = new Date().getTime();
+            // 禁止整个页面的拖动行为
+            document.addEventListener('dragstart', function(event) {
+                event.preventDefault(); // 禁止拖动事件
+            });
+        };
+
+        // 结束数据收集
+        window.endTracking = function() {
+            trackingStarted = false;
+            // 移除鼠标事件监听器
+            document.getElementById('taskImage').removeEventListener('mousedown', handleMouseDown);
+            document.getElementById('taskImage').removeEventListener('mouseup', handleMouseUp);
+            document.getElementById('taskImage').removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);   
+            window.location.href = "8.html";      
+        };
+        // 处理键盘按下事件
+        function handleKeyDown(event) {
+            keyDown = event.key; // 保存按下的键
+            if (keyDown === "D" || keyDown === "T") {
+                keyPressed = true;
+            }
+        }
+        // 处理键盘抬起事件
+        function handleKeyUp(event) {
+            keyPressed = false;
+            keyDown = null; // 释放按键，避免后续误记录
+        }
+
+       // 处理鼠标按下事件
+       function handleMouseDown(event) {
+            if (trackingStarted) {
+                startCoords = { x: event.offsetX, y: event.offsetY };
+                startTime = new Date().getTime(); // 记录开始时间
+                console.log(`鼠标点击开始 - 时间: ${startTime}, 坐标: (${startCoords.x}, ${startCoords.y})`);
+                updateTextBox("交互类型"); 
+            }
+        }
+
+        // 处理鼠标抬起事件
+        function handleMouseUp(event) {
+            if (trackingStarted) {
+                endCoords = { x: event.offsetX, y: event.offsetY };
+                endTime = new Date().getTime(); // 记录结束时间
+                const duration = endTime - startTime; // 计算持续时间
+                const distance = Math.sqrt(Math.pow(endCoords.x - startCoords.x, 2) + Math.pow(endCoords.y - startCoords.y, 2)); // 计算位移
+                
+                // 只有在阈值已经计算过后才进行判断
+                if (thresholdCalculated) {
+                    // 设定滑动阈值，取宽度和高度的 5% 中的较小值
+                    const slideThreshold = Math.min(displayedWidth * 0.04, displayedHeight * 0.04); 
+                  
+
+                    // 根据操作类型输出标签，并更新文本框内容
+                    if (duration < 500 && distance < slideThreshold) {
+                        updateTextBox("点击");
+                        console.log("标签: 点击操作");
+                    } else if (distance > slideThreshold) {
+                        updateTextBox("滑动");
+                        console.log("标签: 滑动操作");
+                        if (keyDown === "D") {
+                            updateTextBox("拖动");
+                            console.log("标签: 拖动操作");
+                        }
+                    }
+                }
+                // 判断是否为文本输入操作
+                if (keyDown === "T") {
+                    updateTextBox("文本输入");
+                    console.log("标签: 文本输入操作");
+                }
+
+                console.log(`鼠标点击结束 - 时间: ${endTime}, 持续时间: ${duration} 毫秒, 位移: ${distance}px, 坐标: (${endCoords.x}, ${endCoords.y})`);          
+            }
+        }
+
+        // 处理鼠标移动事件（滑动操作）
+        function handleMouseMove(event) {
+            if (trackingStarted && event.buttons === 1) { // 判断是否按下鼠标左键（滑动）
+                endCoords = { x: event.offsetX, y: event.offsetY }; // 实时更新结束坐标
+            }
+        }
+
+        // 更新文本框内容
+        function updateTextBox(text) {
+            document.querySelector('.text-box').value = text;  // 将标签文本赋值给文本框
+        }
+
+        function recordData(actionType, startTime, endTime, startCoords, endCoords) {
+            let data = {
+                action: actionType,
+                startTime: startTime,
+                endTime: endTime,
+                startCoords: `${startCoords.x}, ${startCoords.y}`,
+                endCoords: `${endCoords.x}, ${endCoords.y}`
+            }
+        }
+    });
+</script>
+</body>
+</html>

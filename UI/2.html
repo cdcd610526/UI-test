@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务页面</title>
+    <style>
+        /* 页面整体样式 */
+        body {
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+        }
+
+        /* 大标题样式 */
+        h1 {
+            font-size: 40px;
+            color: #333;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* 小标题样式 */
+        h2 {
+            font-size: 24px;
+            color: #666;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        /* 图片容器样式 */
+        .image-container {
+            display: flex;
+            justify-content: space-between;
+            width: 60%;
+            margin-top: 30px;
+        }
+
+        .image-container img {
+            max-width: 30%; /* 每张图片占容器的 30% */
+            max-height: 600px; /* 根据图片大小调整 */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            object-fit: contain; /* 保持图片比例 */
+        }
+
+        /* 按钮样式 */
+        .start-btn {
+            padding: 15px 30px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+
+        .start-btn:hover {
+            background-color: #45a049;
+        }
+
+        .start-btn:active {
+            background-color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+    <!-- 大标题 -->
+    <h1>UI交互测试-任务类型说明</h1>
+
+    <!-- 小标题 -->
+    <h2>共有三类任务：（1）注册/登录 （2）信息检索 （3）属性设置</h2>
+    <h2>任务（2）示例：若想查找自己感兴趣的内容，在看到以下界面时您会有什么样的交互行为？</h2>
+
+    <!-- 图片容器 -->
+    <div class="image-container">
+        <img src="https://cdcd610526.github.io/UI-test/图像块/image15/2/10498.jpg" alt="Visio Diagram 1">
+        <img src="https://cdcd610526.github.io/UI-test/图像块/image14/2/92642.jpg" alt="Visio Diagram 2">
+        <img src="https://cdcd610526.github.io/UI-test/图像块/1/信息检索/Android_137.jpg" alt="Visio Diagram 3">
+    </div>
+
+    <!-- 开始测试按钮 -->
+    <button class="start-btn" onclick="startTest()">Next</button>
+
+    <!-- 星星拖尾效果 -->
+    <span class="js-cursor-container"></span>
+    <script src="星星拖尾.js"></script>
+    <script src="点击烟花.js"></script>
+
+    <script>
+        // 禁止拖动
+        document.addEventListener('dragstart', function(event) {
+            event.preventDefault(); // 禁止拖动事件
+        });
+        function startTest() {
+            window.location.href = "3.html";   // 你可以在这里替换成实际的跳转或其他逻辑
+        }
+    </script>
+</body>
+</html>

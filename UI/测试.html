@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务页面</title>
+    <!-- CSS 部分 -->
+    <style>
+        /* 页面整体布局 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            flex-direction: column;
+        }
+
+        /* 容器的基本样式 */
+        .container {
+            width: 80%;
+            height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            text-align: center;
+            margin-left: 20px;  
+            margin-right: 20px; 
+        }
+        .left, .right {
+            width: 20%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            text-align: left;
+            height: 100%;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        .right {
+            position: relative; 
+        }
+        .text-box {
+            box-sizing: border-box;  
+            width: 50%;
+            margin-left: auto;
+            margin-right: 0;
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .text-box {
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            color: #333;
+            font-weight: bold;
+        }
+        .left table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .left table, .left th, .left td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .left th {
+            background-color: #f1f1f1;
+        }
+
+        .middle {
+            width: 35%;
+            text-align: center;           
+        }
+
+        .image-container {
+            border: 2px solid #ddd;
+            padding: 10px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .middle img {
+            width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+
+        .end-btn {
+            margin-left: 0px;
+            margin-right: auto;        
+            margin-top: 20px;
+            padding: 20px 40px; 
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .end-btn:hover {
+            background-color: #45a049;
+        }
+        
+        .right h3 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+            padding-top: 0px;  
+        }
+
+        .right p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .important-text {
+            font-size: 18px;         
+            font-weight: bold;        
+            color: #333;        
+            margin: 10px 0;       
+        }
+
+        h1 {
+            font-size: 40px;
+            color: #333;
+            margin-top: 0px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- 主体容器 -->
+<div class="container">
+    <div class="left">
+        <input id="operationType" class="text-box" type="text" value="交互类型" readonly>
+        <h3>交互类型说明</h3>
+        <table>
+            <tr>
+                <th>交互类型</th>
+                <th>模拟方式</th>
+            </tr>
+            <tr>
+                <td>点击</td>
+                <td>在目标区域按一下鼠标左键</td>
+            </tr>
+            <tr>
+                <td>滑动</td>
+                <td>鼠标左键保持按住状态并拖动</td>
+            </tr>
+            <tr>
+                <td>拖动</td>
+                <td>同时按下鼠标左键和键盘中的大写“D”，移动鼠标到目标位置后释放鼠标和键盘</td>
+            </tr>
+            <tr>
+                <td>文本输入</td>
+                <td>同时按下鼠标左键和键盘中的大写“T”，将鼠标从文本框最左端移动到最右端后释放鼠标和键盘</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="middle">
+        <h1>UI交互测试</h1>
+        <div class="image-container">
+            <img id="taskImage"  alt="Task Image">
+        </div>
+    </div>
+
+    <div class="right">
+        <h3>任务说明</h3>
+        <p class="important-text" id="taskDescription">共51张UI截图，分为三类任务：</p>
+        <p class="important-text" id="taskDescription">1. 注册/登录 (第1-17张图) : 若想在某个APP上注册或登录账号，那在看到中间这个界面时，您会有什么样的交互行为？</p>
+        <p class="important-text" id="taskDescription">2. 信息检索 (第18-34张图) : 若想查找自己感兴趣的内容，在看到中间这个界面时您会有什么样的交互行为？</p>
+        <p class="important-text" id="taskDescription">3. 属性设置 (第35-51张图) : 若想根据自己的习惯/喜好设置某些条件或参数，在看到中间这个界面时您会有什么样的交互行为？</p>
+        <p class="important-text">每完成一张图片请点击End按钮</p>
+        <button class="end-btn" onclick="endTracking()">End</button>
+    </div>
+</div>
+<span class="js-cursor-container"></span>
+<script src="星星拖尾.js"></script>
+<script src="点击烟花.js"></script>
+
+<!-- JavaScript 部分 -->
+<script>
+    let collectedData = [];
+    let taskStartData = [];
+    let currentImageIndex = 0;
+    let imageUrls = [];
+    // 用于存储所有图片的结果
+    let allResults = [];
+
+    function updateTextBox(text) {
+        document.querySelector('.text-box').value = text;
+    }
+
+    // 获取 JSON 文件中的图片链接
+    fetch('https://cdcd610526.github.io/UI-test/imageURL/1/merged_image_urls.json')
+        .then(response => response.json())
+        .then(data => {
+            imageUrls = data.imageURLs;
+            // 分成3个组：前17张、第二组17张、第三组17张
+            const group1 = imageUrls.slice(0, 17);  // 第一组
+            const group2 = imageUrls.slice(17, 34); // 第二组
+            const group3 = imageUrls.slice(34, 51); // 第三组
+
+            // 打乱每个组内的顺序
+            shuffleArray(group1);
+            shuffleArray(group2);
+            shuffleArray(group3);
+
+            // 重新合并，组内顺序打乱但组的顺序不变
+            imageUrls = group1.concat(group2, group3);
+
+            // 加载第一组图片并突出显示描述文字
+            loadGroupImages(1);
+            
+            if (imageUrls && imageUrls.length > 0) {
+                loadImage(currentImageIndex);
+            } else {
+                console.error("没有可用的图片链接");
+            }
+
+            // Fisher-Yates 打乱算法
+            function shuffleArray(arr) {
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+            }
+        })
+        .catch(error => {
+            console.error("加载图片链接失败:", error);
+        });
+
+    // 根据组号加载对应组的图片
+    function loadGroupImages(groupNumber) {
+        let currentGroup;
+        if (groupNumber === 1) {
+            currentGroup = imageUrls.slice(0, 17);
+        } else if (groupNumber === 2) {
+            currentGroup = imageUrls.slice(17, 34);
+        } else {
+            currentGroup = imageUrls.slice(34, 51);
+        }
+        // 此处可以根据需求添加组内的描述文字等其他逻辑
+    }
+
+    // 加载指定索引的图片
+    function loadImage(index) {
+        if (index >= 0 && index < imageUrls.length) {
+            console.log("加载图片索引: " + index);
+            document.getElementById('taskImage').src = imageUrls[index];
+            updateTextBox((index + 1) + "/51");
+        } else {
+            console.error("图片索引超出范围" + index);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let taskImage = document.getElementById('taskImage');
+        let displayedWidth = 0;
+        let displayedHeight = 0;
+        let originalWidth = 0;
+        let originalHeight = 0;
+        let thresholdCalculated = false;
+
+        taskImage.onload = function() {
+            if (taskImage.complete) {
+                let imageLoadTimestamp = new Date().getTime();
+                console.log('taskImage加载完成的时间戳:', imageLoadTimestamp);
+                displayedWidth = taskImage.clientWidth;
+                displayedHeight = taskImage.clientHeight;
+                originalWidth = taskImage.naturalWidth;
+                originalHeight = taskImage.naturalHeight;
+                console.log('图片的显示尺寸:', displayedWidth, displayedHeight);
+                console.log('图片的原始尺寸:', originalWidth, originalHeight);
+                // 计算滑动阈值
+                const slideThreshold = Math.min(displayedWidth * 0.04, displayedHeight * 0.04);
+                console.log('计算的滑动阈值:', slideThreshold);
+                thresholdCalculated = true;
+                // 记录任务开始数据
+                recordTaskStartData(imageLoadTimestamp, displayedWidth, displayedHeight, originalWidth, originalHeight);
+            }
+        }
+
+        let trackingStarted = true;
+        let startTime = 0;
+        let endTime = 0;
+        let startCoords = { x: 0, y: 0 };
+        let endCoords = { x: 0, y: 0 };
+        let keyPressed = false;
+        let keyDown = null;
+
+        // 启动数据收集
+        window.onload = function() {
+            trackingStarted = true;
+            let taskImage = document.getElementById('taskImage');
+            taskImage.addEventListener('mousedown', handleMouseDown);
+            taskImage.addEventListener('mouseup', handleMouseUp);
+            taskImage.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('keyup', handleKeyUp);
+            // 记录开始时间
+            startTime = new Date().getTime();
+            // 禁止整个页面的拖动行为
+            document.addEventListener('dragstart', function(event) {
+                event.preventDefault();
+            });
+        };
+
+        // 结束数据收集（在点击“结束”按钮时调用）
+        window.endTracking = function() {
+            trackingStarted = false;
+
+            // 移除事件监听器
+            document.getElementById('taskImage').removeEventListener('mousedown', handleMouseDown);
+            document.getElementById('taskImage').removeEventListener('mouseup', handleMouseUp);
+            document.getElementById('taskImage').removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);
+
+            // 记录当前图片的数据到 allResults 中
+            const taskImage = document.getElementById('taskImage');
+            const imageSrc = taskImage.src;
+            const imageName = imageSrc.split('/').pop().split('.')[0];
+            allResults.push({
+                imageName: imageName,
+                taskData: collectedData,
+                taskStartData: taskStartData
+            });
+
+            console.log("当前图片索引: " + currentImageIndex);
+
+            if (currentImageIndex < imageUrls.length - 1) {
+                // 还有未处理的图片，准备下一张
+                currentImageIndex++;
+                // 清空当前图片的局部数据
+                collectedData = [];
+                taskStartData = [];
+                trackingStarted = true;
+                loadImage(currentImageIndex);
+                window.onload();
+            } else {
+                // 最后一张图片结束后，生成并下载 JSON 文件
+                downloadResults(allResults);
+                console.log("所有图片处理完毕，数据已生成。");
+            }
+        };
+
+        function handleKeyDown(event) {
+            keyDown = event.key;
+            if (keyDown === "D" || keyDown === "T") {
+                keyPressed = true;
+            }
+        }
+
+        function handleKeyUp(event) {
+            keyPressed = false;
+            keyDown = null;
+        }
+
+        // 处理鼠标按下事件
+        function handleMouseDown(event) {
+            if (trackingStarted) {
+                startCoords = { x: event.offsetX, y: event.offsetY };
+                startTime = new Date().getTime();
+                console.log(`鼠标点击开始 - 时间: ${startTime}, 坐标: (${startCoords.x}, ${startCoords.y})`);
+                updateTextBox("交互类型");
+            }
+        }
+
+        // 处理鼠标抬起事件
+        function handleMouseUp(event) {
+            if (trackingStarted) {
+                endCoords = { x: event.offsetX, y: event.offsetY };
+                endTime = new Date().getTime();
+                const duration = endTime - startTime;
+                const distance = Math.sqrt(Math.pow(endCoords.x - startCoords.x, 2) + Math.pow(endCoords.y - startCoords.y, 2));
+
+                if (thresholdCalculated) {
+                    const slideThreshold = Math.min(displayedWidth * 0.04, displayedHeight * 0.04);
+                    if (duration < 500 && distance < slideThreshold) {
+                        updateTextBox("点击");
+                        console.log("标签: Click");
+                        recordData("Click", startTime, endTime, startCoords, endCoords);
+                    } else if (distance > slideThreshold) {
+                        updateTextBox("滑动");
+                        console.log("标签: Swipe");
+                        recordData("Swipe", startTime, endTime, startCoords, endCoords);
+                        if (keyDown === "D") {
+                            updateTextBox("拖动");
+                            console.log("标签: Drag");
+                            recordData("Drag", startTime, endTime, startCoords, endCoords);
+                        }
+                    }
+                }
+                if (keyDown === "T") {
+                    updateTextBox("文本输入");
+                    console.log("标签: Text Input");
+                    recordData("文本输入", startTime, endTime, startCoords, endCoords);
+                }
+                console.log(`鼠标点击结束 - 时间: ${endTime}, 持续时间: ${duration} 毫秒, 位移: ${distance}px, 坐标: (${endCoords.x}, ${endCoords.y})`);
+            }
+        }
+
+        // 处理鼠标移动事件（滑动操作）
+        function handleMouseMove(event) {
+            if (trackingStarted && event.buttons === 1) {
+                endCoords = { x: event.offsetX, y: event.offsetY };
+            }
+        }
+
+        function recordData(actionType, startTime, endTime, startCoords, endCoords) {
+            let data = {
+                action: actionType,
+                startTime: startTime,
+                endTime: endTime,
+                startCoords: `${startCoords.x}, ${startCoords.y}`,
+                endCoords: `${endCoords.x}, ${endCoords.y}`
+            };
+            collectedData.push(data);
+        }
+
+        function recordTaskStartData(startTime, displayedWidth, displayedHeight, originalWidth, originalHeight) {
+            let taskData = {
+                taskStartTimestamp: startTime,
+                imageWidth: displayedWidth,
+                imageHeight: displayedHeight,
+                originalWidth: originalWidth,
+                originalHeight: originalHeight
+            };
+            taskStartData.push(taskData);
+        }
+
+        // 下载所有数据为一个 JSON 文件
+        function downloadResults(results) {
+            const dataStr = JSON.stringify(results, null, 2);
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "results.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    });
+</script>
+</body>
+</html>
