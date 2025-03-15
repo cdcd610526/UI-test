@@ -204,8 +204,9 @@
     let taskStartData = [];
     let currentImageIndex = 0;
     let imageUrls = [];
-    // 用于存储所有图片的结果
     let allResults = [];
+    let nextImage = new Image(); // 用于预加载下一张图片
+    let pageLoadTimestamp = new Date().getTime();
 
     function updateTextBox(text) {
         document.querySelector('.text-box').value = text;
@@ -267,8 +268,14 @@
     function loadImage(index) {
         if (index >= 0 && index < imageUrls.length) {
             console.log("加载图片索引: " + index);
-            document.getElementById('taskImage').src = imageUrls[index];
+            const taskImage = document.getElementById('taskImage');
+            taskImage.src = imageUrls[index];
             updateTextBox((index + 1) + "/51");
+
+            // 预加载下一张图片
+            if (index + 1 < imageUrls.length) {
+                nextImage.src = imageUrls[index + 1]; // 预加载下一张图片
+            }
         } else {
             console.error("图片索引超出范围" + index);
         }
@@ -285,7 +292,8 @@
         taskImage.onload = function() {
             if (taskImage.complete) {
                 let imageLoadTimestamp = new Date().getTime();
-                console.log('taskImage加载完成的时间戳:', imageLoadTimestamp);
+                let taskStartTimestamp = Math.max(pageLoadTimestamp, imageLoadTimestamp);
+                console.log('任务开始时间戳:', taskStartTimestamp);
                 displayedWidth = taskImage.clientWidth;
                 displayedHeight = taskImage.clientHeight;
                 originalWidth = taskImage.naturalWidth;
