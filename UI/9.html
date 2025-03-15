@@ -212,44 +212,52 @@
         document.querySelector('.text-box').value = text;
     }
 
-    // 获取 JSON 文件中的图片链接
-    fetch('https://cdcd610526.github.io/UI-test/imageURL/1/merged_image_urls.json')
-        .then(response => response.json())
-        .then(data => {
-            imageUrls = data.imageURLs;
-            // 分成3个组：前17张、第二组17张、第三组17张
-            const group1 = imageUrls.slice(0, 17);  // 第一组
-            const group2 = imageUrls.slice(17, 34); // 第二组
-            const group3 = imageUrls.slice(34, 51); // 第三组
 
-            // 打乱每个组内的顺序
-            shuffleArray(group1);
-            shuffleArray(group2);
-            shuffleArray(group3);
 
-            // 重新合并，组内顺序打乱但组的顺序不变
-            imageUrls = group1.concat(group2, group3);
+    // 从 URL 参数中获取 imageSet 的值
+    const urlParams = new URLSearchParams(window.location.search);
+    const imageSet = urlParams.get('imageSet'); // 获取 imageSet 参数的值
+    if (!imageSet) {
+        console.error("未指定图片链接批次");
+    } else {
+        // 获取 JSON 文件中的图片链接
+        fetch(imageSet) // 使用动态的 imageSet 参数
+            .then(response => response.json())
+            .then(data => {
+                imageUrls = data.imageURLs;
+                // 分成3个组：前17张、第二组17张、第三组17张
+                const group1 = imageUrls.slice(0, 17);  // 第一组
+                const group2 = imageUrls.slice(17, 34); // 第二组
+                const group3 = imageUrls.slice(34, 51); // 第三组
 
-            // 加载第一组图片并突出显示描述文字
-            loadGroupImages(1);
+                // 打乱每个组内的顺序
+                shuffleArray(group1);
+                shuffleArray(group2);
+                shuffleArray(group3);
+
+                // 重新合并，组内顺序打乱但组的顺序不变
+                imageUrls = group1.concat(group2, group3);
+    
+                // 加载第一组图片并突出显示描述文字
+                loadGroupImages(1);
             
-            if (imageUrls && imageUrls.length > 0) {
-                loadImage(currentImageIndex);
-            } else {
-                console.error("没有可用的图片链接");
-            }
-
-            // Fisher-Yates 打乱算法
-            function shuffleArray(arr) {
-                for (let i = arr.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                if (imageUrls && imageUrls.length > 0) {
+                    loadImage(currentImageIndex);
+                } else {
+                    console.error("没有可用的图片链接");
                 }
-            }
-        })
-        .catch(error => {
-            console.error("加载图片链接失败:", error);
-        });
+                // Fisher-Yates 打乱算法
+                function shuffleArray(arr) {
+                    for (let i = arr.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [arr[i], arr[j]] = [arr[j], arr[i]];
+                    }
+                }
+            })
+            .catch(error => {
+                console.error("加载图片链接失败:", error);
+            });
+    }
 
     // 根据组号加载对应组的图片
     function loadGroupImages(groupNumber) {
